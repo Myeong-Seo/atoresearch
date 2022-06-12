@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+</head>
+<body>
+	<h1 th:text="${Title}"></h1>
+	<form name="insert" action="insert" method="post">
+	<input type="text" name="hostname" size="20" placeholder="host명을 입력해주세요.">
+	<input type="text" name="ip" size="20" placeholder="ip를 입력해주세요.">
+	<button type="submit" id="click">등록완료</button>
+	</form>
+
+<script type="text/javascript">	
+	document.getElementById('click').onclick = function () {
+		var message = "${msg}";
+		var url = "${url}";
+		alert(message);
+  		location.href = url;
+	};
+</script>
+</body>
+</html>

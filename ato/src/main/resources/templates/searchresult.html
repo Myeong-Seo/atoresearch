@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>호스트 검색</title>
+</head>
+<body>
+	<h1 th:text="${Title}"></h1>
+	<!-- <form name="search" action="search" method="post"> -->
+	Host명&nbsp;<input type="text" name="hostname" size="20" th:value="${hostname}">
+	<br>
+	<br>
+	IP주소&nbsp;<input type="text" name="ip" size="20" th:value="${ip}">
+	<br>
+	<br>
+	등록/수정시간&nbsp;<input type="text" name="data_time" size="20" th:value="${data_time}">
+	<button type="submit" th:value="${btn}">수정</button>
+	<button type="submit" th:value="${btn}">삭제</button>
+	<!-- </form> -->
+</body>
+</html>

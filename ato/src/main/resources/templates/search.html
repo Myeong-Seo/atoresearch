@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>호스트 검색</title>
+</head>
+<body>
+	<h1 th:text="${Title}"></h1>
+	<form name="search" action="search" method="post">
+	<input type="text" name="hostname" size="20" placeholder="host명을 입력해주세요.">
+	<button type="submit">검색</button>
+	</form>
+</script>
+</body>
+</html>
