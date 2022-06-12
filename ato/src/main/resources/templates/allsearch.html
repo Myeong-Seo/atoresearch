@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>호스트 검색</title>
+</head>
+<body>
+	<h1 th:text="${Title}"></h1>
+	
+	<button type="button" onclick="location.href='/main'">메인으로</button>
+	
+	<table>
+		<tr th:each="Host : ${Hosts}">
+			<td th:text="${Host.name}"></td>
+			<td th:text="${Host.ip}"></td>
+			<td th:text="${Host.date_time}"></td>
+		</tr>
+	</table>
+</body>
+</html>

@@ -10,6 +10,12 @@
 	<input type="text" name="hostname" size="20" placeholder="host명을 입력해주세요.">
 	<button type="submit">검색</button>
 	</form>
-</script>
+	<table>
+		<tr th:each="Host : ${Hosts}">
+			<td th:text="${Hosts.hostname}"></td>
+			<td th:text="${Hosts.ip}"></td>
+			<td th:text="${Hosts.date_time}"></td>
+		</tr>
+	</table>
 </body>
 </html>

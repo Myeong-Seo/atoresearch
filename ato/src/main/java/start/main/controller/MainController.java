@@ -42,7 +42,12 @@ public class MainController {
 	// 조회 post 완성
 	@RequestMapping(value = "/search", method=RequestMethod.POST)
 	public String SearchHost(@RequestParam("hostname") String hostname, Model model) {
+		
+		model.addAttribute("Title", "호스트 조회");
 		HostVO getHost = new HostVO();
+		
+		//List<HostVO> Hosts = hostservice.findAll();
+		model.addAttribute("Hosts", hostservice.findAll());
 		
 		getHost = hostservice.findByName(hostname);
 		
@@ -52,9 +57,39 @@ public class MainController {
 			model.addAttribute("data_time", getHost.getDate_time());
 			return "searchresult";
 		}
-		else {
-			return "main";
-		}
+		else
+			return "searchresult";
+	}
+	
+	// 모든 Host 조회 완성
+	@RequestMapping(value = "/allsearch", method=RequestMethod.GET)
+	public String allSearchHost(Model model) {
+		
+		model.addAttribute("Title", "호스트 전체조회");
+		
+		List<HostVO> Hosts = new ArrayList<>(); 
+		
+		Hosts = hostservice.findAll();
+		model.addAttribute("Hosts", Hosts);
+		
+		return "allsearch";
+	}
+	
+	// 수정 get 완성
+//	@RequestMapping(value = "/update", method=RequestMethod.GET)
+//	public String UpdateHost() {
+//		
+//		return "searchresult";
+//	}
+	
+	// 수정 post 미완성
+	@RequestMapping(value = "/update", method=RequestMethod.POST)
+	public String UpdateHost(@RequestParam("hostname") String hostname, @RequestParam("ip") String ip, Model model) {
+		HostVO getHost = new HostVO();
+		
+		getHost = hostservice.findByName(hostname);
+		
+		return "main";
 	}
 	
 	// 완성
