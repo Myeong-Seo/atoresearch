@@ -1,5 +1,7 @@
 package start.main.db;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -42,6 +44,13 @@ public class HostVO {
 	
 	@Column
 	//@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
-	private String date_time;
+	// 등록/수정 시간에 필요한 날짜정보
+	private String date_time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));;
+	
+	public void update(String name, String ip) {
+		this.name = name;
+		this.ip = ip;
+	}
+	
 	
 }

@@ -6,15 +6,17 @@
 </head>
 <body>
 	<h1 th:text="${Title}"></h1>
-	
 	<button type="button" onclick="location.href='/main'">메인으로</button>
 	
+	<form name="delete" action="delete" method="post">
 	<table>
 		<tr th:each="Host : ${Hosts}">
 			<td th:text="${Host.name}"></td>
 			<td th:text="${Host.ip}"></td>
 			<td th:text="${Host.date_time}"></td>
+			<!-- <td><button type="submit">삭제</button></td> -->
 		</tr>
 	</table>
+	</form>
 </body>
 </html>

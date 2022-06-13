@@ -2,6 +2,7 @@ package start.main.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,25 @@ public class HostService {
 	
 	public HostVO findByName(String name) {
 		return hostVORepo.findByName(name);
+	}
+	
+	public Optional<HostVO> findById(Long seq) {
+		return hostVORepo.findById(seq);
+	}
+	
+	public HostVO findBySeq(Long seq) {
+		HostVO getHost = new HostVO();
+		getHost.setSeq(seq);
+		return getHost;
+	}
+	
+	public void deleteById(Long seq) {
+		Optional<HostVO> getHost = hostVORepo.findById(seq);
+		HostVO delHost = new HostVO();
+		if(getHost.isPresent()) {
+			delHost.setSeq(seq);
+		}
+		hostVORepo.delete(delHost);
 	}
 	
 }

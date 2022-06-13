@@ -6,16 +6,27 @@
 </head>
 <body>
 	<h1 th:text="${Title}"></h1>
-	<form name="update" action="update" method="post">
+	<form name="update" method="post">
+	<!-- <input type="hidden" name="_method" value="put"/> -->
+	<input type="hidden" name="seq" th:value="${seq}">
 	Host명&nbsp;<input type="text" name="hostname" size="20" th:value="${hostname}">
 	<br>
 	<br>
 	IP주소&nbsp;<input type="text" name="ip" size="20" th:value="${ip}">
 	<br>
 	<br>
-	등록/수정시간&nbsp;<input type="text" name="data_time" size="20" th:value="${data_time}">
-	<button type="submit" th:name="${btn}">수정</button>
-	<button type="submit" th:name="${btn}">삭제</button>
+	등록/수정시간&nbsp;<input type="text" name="date_time" size="20" th:value="${date_time}">
+	<br>
+	<br>
+	상태확인&nbsp;<input type="text" name="date_time" size="20" th:value="${status}">
+	<br>
+	<br>
+	마지막Alive시간&nbsp;<input type="text" name="date_time" size="20" th:value="${last_alive}">
+	<br>
+	<br>
+	<button type="submit" formaction="/update">수정</button>
+	<button type="submit" formaction="/delete">삭제</button>
+	<button type="button" onclick="location.href='/main'">메인</button>
 	</form>
 </body>
 </html>
