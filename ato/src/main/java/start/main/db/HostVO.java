@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Pattern;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -43,13 +44,22 @@ public class HostVO {
 	private String ip;
 	
 	@Column
-	//@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
 	// 등록/수정 시간에 필요한 날짜정보
-	private String date_time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));;
+	private String date_time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 	
-	public void update(String name, String ip) {
+	@Column
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private String status;
+	
+	@Column
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private String last_alive;
+	
+	public void update(String name, String ip, String status, String last_alive) {
 		this.name = name;
 		this.ip = ip;
+		this.status = status;
+		this.last_alive = last_alive;
 	}
 	
 	

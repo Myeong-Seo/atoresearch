@@ -8,13 +8,22 @@
 	<h1 th:text="${Title}"></h1>
 	<button type="button" onclick="location.href='/main'">메인으로</button>
 	
-	<form name="delete" action="delete" method="post">
+	<form name="allsearch" method="post">
 	<table>
+		<tr>
+			<td>호스트명</td>
+			<td>IP주소</td>
+			<td>등록/수정시간</td>
+			<td>상태확인</td>
+			<td>마지막Alive시간</td>
+		</tr>
 		<tr th:each="Host : ${Hosts}">
 			<td th:text="${Host.name}"></td>
 			<td th:text="${Host.ip}"></td>
 			<td th:text="${Host.date_time}"></td>
 			<!-- <td><button type="submit">삭제</button></td> -->
+			<td th:text="${Host.status}"></td>
+			<td th:text="${Host.last_alive}"></td>
 		</tr>
 	</table>
 	</form>

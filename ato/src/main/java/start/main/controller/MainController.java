@@ -18,14 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import start.main.db.HostVO;
-import start.main.db.HostVORepo;
 import start.main.service.HostService;
 
 @Controller
 public class MainController {
-	
-	// 등록/수정 시간에 필요한 날짜정보
-	String datetime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 	
 	InetAddress inet = null;
 	
@@ -50,6 +46,9 @@ public class MainController {
 	@RequestMapping(value = "/search", method=RequestMethod.POST)
 	public String SearchHost(@RequestParam("hostname") String hostname, Model model) {
 		
+		// 마지막 Alive시간 확인
+		String last_Alive = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		
 		model.addAttribute("Title", "호스트 조회");
 		HostVO getHost = new HostVO();
 		
@@ -71,10 +70,14 @@ public class MainController {
 			
 			try {
 				if(inet.isReachable(1000)) {
-					model.addAttribute("status","Alive");
+					getHost.setStatus("Alive");
+					model.addAttribute("status",getHost.getStatus());
+					getHost.setLast_alive(last_Alive);
+					model.addAttribute("last_alive",getHost.getLast_alive());
 				}
 				else {
-					model.addAttribute("status","");
+					getHost.setStatus("Unreachable");
+					model.addAttribute("status",getHost.getStatus());
 				}
 			} catch(IOException e) {
 				e.printStackTrace();
@@ -90,11 +93,40 @@ public class MainController {
 	@RequestMapping(value = "/allsearch", method=RequestMethod.GET)
 	public String allSearchHost(Model model) {
 		
+		// 마지막 Alive시간 확인
+		String last_Alive = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		
+		
 		model.addAttribute("Title", "호스트 전체조회");
 		
 		List<HostVO> Hosts = new ArrayList<>(); 
-		
 		Hosts = hostservice.findAll();
+		
+		for(int i = 0 ; i < Hosts.size() ; i++) {
+			try {
+				inet = InetAddress.getByName(Hosts.get(i).getIp());
+			} catch(UnknownHostException e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(inet.isReachable(1000)) {
+					Hosts.get(i).setStatus("Alive");
+					model.addAttribute("status",Hosts.get(i).getStatus());
+					if(Hosts.get(i).getLast_alive() == null) {
+						Hosts.get(i).setLast_alive(last_Alive);
+					}
+					model.addAttribute("last_alive",Hosts.get(i).getLast_alive());
+				}
+				else {
+					Hosts.get(i).setStatus("Unreachable");
+					model.addAttribute("status",Hosts.get(i).getStatus());
+				}
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+			hostservice.insertHost(Hosts.get(i));
+		}
 		model.addAttribute("Hosts", Hosts);
 		
 		return "allsearch";
@@ -111,6 +143,12 @@ public class MainController {
 	@RequestMapping(value = "/update", method=RequestMethod.POST)
 	public String UpdateHost(@RequestParam("seq") Long seq, @RequestParam("hostname") String hostname, @RequestParam("ip") String ip, Model model) {
 		
+		// 등록/수정 시간에 필요한 날짜정보
+		String datetime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		
+		// 마지막 Alive시간 확인
+		String last_Alive = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		
 		HostVO getHost = new HostVO();
 		getHost = hostservice.findBySeq(seq);
 		Optional<HostVO> id = hostservice.findById(getHost.getSeq());
@@ -119,6 +157,27 @@ public class MainController {
 			getHost.setName(hostname);
 			getHost.setIp(ip);
 			getHost.setDate_time(datetime);
+			
+			try {
+				inet = InetAddress.getByName(getHost.getIp());
+			} catch(UnknownHostException e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(inet.isReachable(1000)) {
+					getHost.setStatus("Alive");
+					model.addAttribute("status",getHost.getStatus());
+					getHost.setLast_alive(last_Alive);
+					model.addAttribute("last_alive",getHost.getLast_alive());
+				}
+				else {
+					getHost.setStatus("Unreachable");
+					model.addAttribute("status",getHost.getStatus());
+				}
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
 			hostservice.insertHost(getHost);
 			return "update";
 		}
@@ -150,6 +209,10 @@ public class MainController {
 	// 미완성(정규표현식 벗어난 문구 출력)
 	@RequestMapping(value = "/insert", method=RequestMethod.POST)
 	public String InsertHost(@RequestParam("hostname") String hostname, @RequestParam("ip") String ip, Model model) {
+		
+		// 등록/수정 시간에 필요한 날짜정보
+		String datetime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		
 		model.addAttribute("Title", "호스트 등록");
 		if(Pattern.matches("((\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])([.](?!$)|$)){4}", ip)) {
 			model.addAttribute("msg","호스트 등록이 완료되었습니다.");
